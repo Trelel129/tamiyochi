@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:film_management/model/movie.dart';
+import 'package:tamiyochi/model/movie.dart';
 
 final _lightColors = [
   Colors.amber.shade300,

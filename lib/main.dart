@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:film_management/page/movie_page.dart';
+import 'package:tamiyochi/page/movie_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

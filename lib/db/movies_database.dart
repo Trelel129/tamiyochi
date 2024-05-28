@@ -1,8 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:film_management/model/movie.dart';
+import 'package:tamiyochi/model/movie.dart';
 
-class MovieDatabase{
+class MovieDatabase {
   static final MovieDatabase instance = MovieDatabase._init();
 
   static Database? _database;

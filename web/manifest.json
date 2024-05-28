@@ -1,6 +1,6 @@
 {
-    "name": "film_management",
-    "short_name": "film_management",
+    "name": "tamiyochi",
+    "short_name": "tamiyochi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

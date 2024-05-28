@@ -1,4 +1,4 @@
-package com.example.film_management
+package com.example.tamiyochi
 
 import io.flutter.embedding.android.FlutterActivity
 

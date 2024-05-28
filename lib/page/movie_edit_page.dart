@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:film_management/db/movies_database.dart';
-import 'package:film_management/model/movie.dart';
-import 'package:film_management/widget/movie_form_widget.dart';
+import 'package:tamiyochi/db/movies_database.dart';
+import 'package:tamiyochi/model/movie.dart';
+import 'package:tamiyochi/widget/movie_form_widget.dart';
 
 class AddEditNotePage extends StatefulWidget {
   final Movie? note;
@@ -34,25 +34,25 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      actions: [buildButton()],
-    ),
-    body: Form(
-      key: _formKey,
-      child: NoteFormWidget(
-        isImportant: isImportant,
-        image: image,
-        title: title,
-        description: description,
-        onChangedImportant: (isImportant) =>
-            setState(() => this.isImportant = isImportant),
-        onChangedImage: (image) => setState(() => this.image = image),
-        onChangedTitle: (title) => setState(() => this.title = title),
-        onChangedDescription: (description) =>
-            setState(() => this.description = description),
-      ),
-    ),
-  );
+        appBar: AppBar(
+          actions: [buildButton()],
+        ),
+        body: Form(
+          key: _formKey,
+          child: NoteFormWidget(
+            isImportant: isImportant,
+            image: image,
+            title: title,
+            description: description,
+            onChangedImportant: (isImportant) =>
+                setState(() => this.isImportant = isImportant),
+            onChangedImage: (image) => setState(() => this.image = image),
+            onChangedTitle: (title) => setState(() => this.title = title),
+            onChangedDescription: (description) =>
+                setState(() => this.description = description),
+          ),
+        ),
+      );
 
   Widget buildButton() {
     final isFormValid = title.isNotEmpty && description.isNotEmpty;
