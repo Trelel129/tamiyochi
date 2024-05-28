@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tamiyochi/db/movies_database.dart';
 import 'package:tamiyochi/model/movie.dart';
 import 'package:tamiyochi/widget/movie_form_widget.dart';
+import 'package:tamiyochi/services/firestore.dart';
 
 class AddEditNotePage extends StatefulWidget {
   final Movie? note;
@@ -21,6 +22,8 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   late String image;
   late String title;
   late String description;
+
+  final FirestoreService firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -106,6 +109,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
       createdTime: DateTime.now(),
     );
 
-    await MovieDatabase.instance.create(note);
+    // await MovieDatabase.instance.create(note);
+    await firestoreService.addNote(note);
   }
 }
