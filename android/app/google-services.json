@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "575130281249",
+    "project_id": "tamiyochi",
+    "storage_bucket": "tamiyochi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575130281249:android:867df084c8d1939afe4a60",
+        "android_client_info": {
+          "package_name": "com.example.ppb_fire_crud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcHf5DhijNmRKCvTucsaWkdXsvifxNto4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575130281249:android:41e61c79f5de4376fe4a60",
+        "android_client_info": {
+          "package_name": "com.example.tamiyochi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcHf5DhijNmRKCvTucsaWkdXsvifxNto4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

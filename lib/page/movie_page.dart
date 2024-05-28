@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tamiyochi/db/movies_database.dart';
@@ -16,6 +17,7 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   late List<Movie> notes;
   bool isLoading = false;
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
@@ -42,8 +44,8 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Favorite Movie',
+          title: Text(
+            "Favorite " + user.email! + " Movie",
             style: TextStyle(fontSize: 24),
           ),
           actions: const [Icon(Icons.search), SizedBox(width: 12)],
@@ -53,7 +55,7 @@ class _MoviePageState extends State<MoviePage> {
               ? const CircularProgressIndicator()
               : notes.isEmpty
                   ? const Text(
-                      'No Notes',
+                      'No Books',
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     )
                   : buildNotes(),

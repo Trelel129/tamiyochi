@@ -31,7 +31,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC95rHFgGZHS10VVblyIFU4NM1asn6uvxs',
-    appId: '1:861387051087:web:da71e26ca03b29edfc5a3a',
-    messagingSenderId: '861387051087',
-    projectId: 'fir-ppb-cb2ec',
-    authDomain: 'fir-ppb-cb2ec.firebaseapp.com',
-    storageBucket: 'fir-ppb-cb2ec.appspot.com',
-    measurementId: 'G-8M9RC5S1X7',
+    apiKey: 'AIzaSyDG_cNUX0VE19e3VhyN1DzGQxd7hfe4_HU',
+    appId: '1:575130281249:web:0dd103558c2d340dfe4a60',
+    messagingSenderId: '575130281249',
+    projectId: 'tamiyochi',
+    authDomain: 'tamiyochi.firebaseapp.com',
+    storageBucket: 'tamiyochi.appspot.com',
+    measurementId: 'G-ELSPHYCHZ6',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBsuqxfzUKh0TfvvNwqvy7IF2JXZl86kAY',
-    appId: '1:861387051087:android:8235da9f6df50da9fc5a3a',
-    messagingSenderId: '861387051087',
-    projectId: 'fir-ppb-cb2ec',
-    storageBucket: 'fir-ppb-cb2ec.appspot.com',
+    apiKey: 'AIzaSyCcHf5DhijNmRKCvTucsaWkdXsvifxNto4',
+    appId: '1:575130281249:android:41e61c79f5de4376fe4a60',
+    messagingSenderId: '575130281249',
+    projectId: 'tamiyochi',
+    storageBucket: 'tamiyochi.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDaGV7MWfvmn5SOOlbMWohmt6AEVUVsWk8',
-    appId: '1:861387051087:ios:5eeef5c5593f4177fc5a3a',
-    messagingSenderId: '861387051087',
-    projectId: 'fir-ppb-cb2ec',
-    storageBucket: 'fir-ppb-cb2ec.appspot.com',
-    iosBundleId: 'com.example.firebasePpb',
+    apiKey: 'AIzaSyAlYH5aFPiXho22oI21mIj4eoCwT5WHK28',
+    appId: '1:575130281249:ios:460713b246f96608fe4a60',
+    messagingSenderId: '575130281249',
+    projectId: 'tamiyochi',
+    storageBucket: 'tamiyochi.appspot.com',
+    iosBundleId: 'com.example.filmManagement',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDaGV7MWfvmn5SOOlbMWohmt6AEVUVsWk8',
-    appId: '1:861387051087:ios:5eeef5c5593f4177fc5a3a',
-    messagingSenderId: '861387051087',
-    projectId: 'fir-ppb-cb2ec',
-    storageBucket: 'fir-ppb-cb2ec.appspot.com',
-    iosBundleId: 'com.example.firebasePpb',
+    apiKey: 'AIzaSyAlYH5aFPiXho22oI21mIj4eoCwT5WHK28',
+    appId: '1:575130281249:ios:460713b246f96608fe4a60',
+    messagingSenderId: '575130281249',
+    projectId: 'tamiyochi',
+    storageBucket: 'tamiyochi.appspot.com',
+    iosBundleId: 'com.example.filmManagement',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyC95rHFgGZHS10VVblyIFU4NM1asn6uvxs',
-    appId: '1:861387051087:web:07dbc5ee70167e10fc5a3a',
-    messagingSenderId: '861387051087',
-    projectId: 'fir-ppb-cb2ec',
-    authDomain: 'fir-ppb-cb2ec.firebaseapp.com',
-    storageBucket: 'fir-ppb-cb2ec.appspot.com',
-    measurementId: 'G-04D0LY2858',
+    apiKey: 'AIzaSyDG_cNUX0VE19e3VhyN1DzGQxd7hfe4_HU',
+    appId: '1:575130281249:web:fb36282c992b0672fe4a60',
+    messagingSenderId: '575130281249',
+    projectId: 'tamiyochi',
+    authDomain: 'tamiyochi.firebaseapp.com',
+    storageBucket: 'tamiyochi.appspot.com',
+    measurementId: 'G-7TG3M3QX23',
   );
 }
