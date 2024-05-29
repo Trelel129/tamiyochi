@@ -1,99 +1,118 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:tamiyochi/db/movies_database.dart';
 import 'package:tamiyochi/model/movie.dart';
-import 'package:tamiyochi/page/movie_edit_page.dart';
 import 'package:tamiyochi/page/movie_detail_page.dart';
 import 'package:tamiyochi/widget/movie_card_widget.dart';
+import 'package:tamiyochi/widget/moving_text.dart';
+
+import 'movie_edit_page.dart';
 
 class MoviePage extends StatefulWidget {
-  const MoviePage({super.key});
+  const MoviePage({Key? key}) : super(key: key);
 
   @override
   State<MoviePage> createState() => _MoviePageState();
 }
 
 class _MoviePageState extends State<MoviePage> {
-  late List<Movie> notes;
-  bool isLoading = false;
-  final user = FirebaseAuth.instance.currentUser!;
+  late final CollectionReference _moviesCollection;
+  bool _isLoading = false;
+  bool _isEmpty = true;
+  List<Movie> _movies = [];
+  late double _screenWidth;
+  late double _screenHeight;
+  final User _user = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
     super.initState();
+    _moviesCollection = FirebaseFirestore.instance.collection('movies');
+    refreshMovies();
+  }
 
-    refreshNotes();
+  Future<void> refreshMovies() async {
+    setState(() => _isLoading = true);
+    final querySnapshot = await _moviesCollection.get();
+    final List<Movie> movies = querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      return Movie.fromJson(data as Map<String, dynamic>);
+    }).toList();
+    setState(() {
+      _movies = movies;
+      _isEmpty = movies.isEmpty;
+      _isLoading = false;
+    });
   }
 
   @override
-  void dispose() {
-    MovieDatabase.instance.close();
-
-    super.dispose();
-  }
-
-  Future refreshNotes() async {
-    setState(() => isLoading = true);
-
-    notes = await MovieDatabase.instance.readAllMovie();
-
-    setState(() => isLoading = false);
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Favorite " + user.email! + " Movie",
-            style: TextStyle(fontSize: 24),
+  Widget build(BuildContext context) {
+    _screenWidth = MediaQuery.of(context).size.width;
+    _screenHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: AppBar(
+        title: Container(
+          height: _screenHeight - 100,
+          child: ScrollingText(
+            text: 'Favorite Movies of ${_user.email}',
+            textStyle: TextStyle(fontSize: 20, color: Colors.white),
+            speed: 5,
           ),
-          actions: const [Icon(Icons.search), SizedBox(width: 12)],
         ),
-        body: Center(
-          child: isLoading
-              ? const CircularProgressIndicator()
-              : notes.isEmpty
-                  ? const Text(
-                      'No Books',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    )
-                  : buildNotes(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.black,
-          child: const Icon(Icons.add),
-          onPressed: () async {
-            await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AddEditNotePage()),
-            );
-
-            refreshNotes();
-          },
-        ),
-      );
-  Widget buildNotes() => StaggeredGrid.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 2,
-      crossAxisSpacing: 2,
-      children: List.generate(
-        notes.length,
-        (index) {
-          final note = notes[index];
-
-          return StaggeredGridTile.fit(
-            crossAxisCellCount: 1,
-            child: GestureDetector(
-              onTap: () async {
-                await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => NoteDetailPage(noteId: note.id!),
-                ));
-
-                refreshNotes();
-              },
-              child: NoteCardWidget(note: note, index: index),
-            ),
+        actions: [
+          Icon(Icons.search),
+          SizedBox(width: 12),
+          IconButton(
+            onPressed: signUserOut,
+            icon: Icon(Icons.logout),
+          ),
+          SizedBox(width: 12),
+        ],
+      ),
+      body: Center(
+        child: _isLoading
+            ? CircularProgressIndicator()
+            : _isEmpty
+            ? Text('No Movies Added Yet',
+            style: TextStyle(color: Colors.white, fontSize: 24))
+            : buildNotes(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        child: const Icon(Icons.add),
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const AddEditNotePage()),
           );
+
+          refreshMovies();
         },
-      ));
+      ),
+    );
+  }
+
+  Widget buildNotes() => StaggeredGridView.countBuilder(
+    crossAxisCount: 2,
+    itemCount: _movies.length,
+    itemBuilder: (BuildContext context, int index) {
+      final movie = _movies[index];
+      return GestureDetector(
+        onTap: () async {
+          await Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NoteDetailPage(noteId: movie.id),
+          ));
+          refreshMovies();
+        },
+        child: NoteCardWidget(note: movie, index: index),
+      );
+    },
+    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+    mainAxisSpacing: 2.0,
+    crossAxisSpacing: 2.0,
+  );
+
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
 }

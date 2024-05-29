@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'tamiyochi.appspot.com',
     measurementId: 'G-7TG3M3QX23',
   );
+
 }

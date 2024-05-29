@@ -1,33 +1,15 @@
-const String tableMovie = 'movie';
-
-class MovieFields {
-  static final List<String> values = [
-    id,
-    isImportant,
-    title,
-    description,
-    image,
-    time
-  ];
-
-  static const String id = '_id';
-  static const String isImportant = 'isImportant';
-  static const String image = 'image';
-  static const String title = 'title';
-  static const String description = 'description';
-  static const String time = 'time';
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Movie {
-  final int? id;
+  final String id;
   final bool isImportant;
   final String title;
   final String description;
   final String image;
   final DateTime createdTime;
 
-  const Movie({
-    this.id,
+  Movie({
+    required this.id,
     required this.isImportant,
     required this.title,
     required this.description,
@@ -36,9 +18,8 @@ class Movie {
   });
 
   Movie copy({
-    int? id,
+    String? id,
     bool? isImportant,
-    int? number,
     String? title,
     String? description,
     String? image,
@@ -53,21 +34,37 @@ class Movie {
         createdTime: createdTime ?? this.createdTime,
       );
 
-  static Movie fromJson(Map<String, Object?> json) => Movie(
-    id: json[MovieFields.id] as int?,
-    isImportant: json[MovieFields.isImportant] == 1,
-    title: json[MovieFields.title] as String,
-    description: json[MovieFields.description] as String,
-    image: json[MovieFields.image] as String,
-    createdTime: DateTime.parse(json[MovieFields.time] as String),
-  );
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      id: json['id'],
+      isImportant: json['isImportant'],
+      title: json['title'],
+      description: json['description'],
+      image: json['image'],
+      createdTime: (json['createdTime'] as Timestamp).toDate(),
+    );
+  }
 
-  Map<String, Object?> toJson() => {
-    MovieFields.id: id,
-    MovieFields.title: title,
-    MovieFields.isImportant: isImportant ? 1 : 0,
-    MovieFields.description: description,
-    MovieFields.image: image,
-    MovieFields.time: createdTime.toIso8601String(),
-  };
+  factory Movie.fromDocument(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Movie(
+      id: doc.id,
+      isImportant: data['isImportant'],
+      title: data['title'],
+      description: data['description'],
+      image: data['image'],
+      createdTime: (data['createdTime'] as Timestamp).toDate(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'isImportant': isImportant,
+      'title': title,
+      'description': description,
+      'image': image,
+      'createdTime': Timestamp.fromDate(createdTime),
+    };
+  }
 }

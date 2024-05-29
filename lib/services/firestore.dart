@@ -6,11 +6,11 @@ class FirestoreService {
   final CollectionReference notes =
   FirebaseFirestore.instance.collection('notes');
 
-  Future<void> addNote(Movie movie) {
+  Future<void> addNote(Movie book) {
     return notes.add({
-      'title': movie.title,
-      'image': movie.image,
-      'description' : movie.description,
+      'title': book.title,
+      'image': book.image,
+      'description' : book.description,
       'timestamp': Timestamp.now()
     });
   }
@@ -30,8 +30,20 @@ class FirestoreService {
       'timestamp': Timestamp.now(),
     });
   }
-
-  Future<void> deleteNote(String noteID) {
-    return notes.doc(noteID).delete();
+  Future<void> updateMovie(Movie movie) async {
+    final docMovie = FirebaseFirestore.instance.collection('movies').doc(movie.id);
+    await docMovie.update(movie.toJson());
+  }
+  Future<void> deleteMovie(String id) async {
+    final docMovie = FirebaseFirestore.instance.collection('movies').doc(id);
+    await docMovie.delete();
+  }
+  Future<Movie> readMovie(String id) async {
+    final doc = await FirebaseFirestore.instance.collection('movies').doc(id).get();
+    if (doc.exists) {
+      return Movie.fromDocument(doc);
+    } else {
+      throw Exception('Movie with ID $id not found');
+    }
   }
 }
