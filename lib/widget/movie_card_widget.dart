@@ -20,12 +20,12 @@ class NoteCardWidget extends StatelessWidget {
   }) : super(key: key);
 
   final Movie note;
-  final int index;
+  final String index;
 
   @override
   Widget build(BuildContext context) {
     // Pick colors from the accent colors based on index
-    final color = _lightColors[index % _lightColors.length];
+    final color = _lightColors[int.parse(index) % _lightColors.length];
     final time = DateFormat.yMMMd().format(note.createdTime);
     final minHeight = getMinHeight();
 

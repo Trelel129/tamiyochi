@@ -7,6 +7,7 @@ import 'package:tamiyochi/page/movie_detail_page.dart';
 import 'package:tamiyochi/widget/movie_card_widget.dart';
 import 'package:tamiyochi/widget/moving_text.dart';
 
+import '../services/firestore.dart';
 import 'movie_edit_page.dart';
 
 class MoviePage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _MoviePageState extends State<MoviePage> {
   late double _screenWidth;
   late double _screenHeight;
   final User _user = FirebaseAuth.instance.currentUser!;
+  final FirestoreService firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -92,11 +94,21 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
-  Widget buildNotes() => StaggeredGridView.countBuilder(
-    crossAxisCount: 2,
-    itemCount: _movies.length,
-    itemBuilder: (BuildContext context, int index) {
-      final movie = _movies[index];
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
+  Widget buildNotes() =>
+      StaggeredGrid.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 4.0,
+        crossAxisSpacing: 4.0,
+        children: _generateTiles(),
+      );
+
+
+  List<Widget> _generateTiles() {
+    return _movies.map((movie) {
       return GestureDetector(
         onTap: () async {
           await Navigator.of(context).push(MaterialPageRoute(
@@ -104,15 +116,8 @@ class _MoviePageState extends State<MoviePage> {
           ));
           refreshMovies();
         },
-        child: NoteCardWidget(note: movie, index: index),
+        child: NoteCardWidget(note: movie, index: movie.id),
       );
-    },
-    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-    mainAxisSpacing: 2.0,
-    crossAxisSpacing: 2.0,
-  );
-
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
+    }).toList();
   }
 }
