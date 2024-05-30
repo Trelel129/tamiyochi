@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../model/movie.dart'; // Adjust the import as necessary
+import 'package:tamiyochi/model/movie.dart';
 
 final _lightColors = [
   Colors.amber.shade300,
@@ -20,12 +19,12 @@ class NoteCardWidget extends StatelessWidget {
   }) : super(key: key);
 
   final Movie note;
-  final String index;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    // Pick colors from the accent colors based on index
-    final color = _lightColors[int.parse(index) % _lightColors.length];
+    /// Pick colors from the accent colors based on index
+    final color = _lightColors[index % _lightColors.length];
     final time = DateFormat.yMMMd().format(note.createdTime);
     final minHeight = getMinHeight();
 
@@ -51,24 +50,14 @@ class NoteCardWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8), // Added some space between text and image
-            if (note.image.isNotEmpty)
-              Image.network(
-                note.image,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.broken_image,
-                    color: Colors.grey.shade700,
-                  );
-                },
-              ),
+            Image.network(note.image)
           ],
         ),
       ),
     );
   }
 
-  // To return different height for different widgets
+  /// To return different height for different widgets
   double getMinHeight() {
     return 200;
   }

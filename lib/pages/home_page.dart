@@ -16,6 +16,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
+        title: Text(
+          "Logged in as",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.grey[900],
         actions: [
           IconButton(
@@ -25,9 +29,17 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Center(
-          child: Text(
-            "Successfully Login As: " + user.email!,
-            style: TextStyle(fontSize: 20),
+          child: Column(
+            children: [
+              Text(
+                user.email!,
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                user.uid!,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
           )),
     );
   }

@@ -7,14 +7,14 @@ import 'package:tamiyochi/page/movie_edit_page.dart';
 import 'package:tamiyochi/page/movie_detail_page.dart';
 import 'package:tamiyochi/widget/movie_card_widget.dart';
 
-class MoviePage extends StatefulWidget {
-  const MoviePage({super.key});
+class ForumPage extends StatefulWidget {
+  const ForumPage({super.key});
 
   @override
-  State<MoviePage> createState() => _MoviePageState();
+  State<ForumPage> createState() => _ForumPageState();
 }
 
-class _MoviePageState extends State<MoviePage> {
+class _ForumPageState extends State<ForumPage> {
   late List<Movie> notes;
   bool isLoading = false;
   final user = FirebaseAuth.instance.currentUser!;
@@ -45,8 +45,9 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: Text(
-        "All Comics",
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        "Forums",
+        style: TextStyle(fontSize: 24, color: Colors.black),
+
       ),
       actions: const [Icon(Icons.search), SizedBox(width: 12)],
     ),

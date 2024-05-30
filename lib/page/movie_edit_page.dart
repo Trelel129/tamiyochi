@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tamiyochi/db/movies_database.dart';
 import 'package:tamiyochi/model/movie.dart';
 import 'package:tamiyochi/widget/movie_form_widget.dart';
 import 'package:tamiyochi/services/firestore.dart';
@@ -88,7 +89,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
     }
   }
 
-  Future<void> updateNote() async {
+  Future updateNote() async {
     final note = widget.note!.copy(
       isImportant: isImportant,
       title: title,
@@ -96,18 +97,19 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
       description: description,
     );
 
-    await firestoreService.updateMovie(note);
+    await MovieDatabase.instance.update(note);
   }
 
-  Future<void> addNote() async {
-    final note = Movie(id: '',
+  Future addNote() async {
+    final note = Movie(
       title: title,
-      isImportant: isImportant,
+      isImportant: true,
       description: description,
       image: image,
       createdTime: DateTime.now(),
     );
 
+    // await MovieDatabase.instance.create(note);
     await firestoreService.addNote(note);
   }
 }
