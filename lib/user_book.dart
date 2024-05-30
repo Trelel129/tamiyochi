@@ -52,25 +52,27 @@ class _UserBookState extends State<UserBook> {
                                 builder: (context) => BookDetailPage(bookId: bookId),
                               ));
                             },
-                            child: Card(
-                              color: Colors.lightGreen.shade300,
-                              child: Container(
-                                constraints: BoxConstraints(minHeight: 200),
-                                padding: const EdgeInsets.all(8),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      bookName,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              child: Card(
+                                color: Colors.lightGreen.shade300,
+                                child: Container(
+                                  constraints: BoxConstraints(minHeight: 200),
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        bookName,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    Image.network(bookImage)
-                                  ],
+                                      Image.network(bookImage)
+                                    ],
+                                  ),
                                 ),
                               ),
                             )

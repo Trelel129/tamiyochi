@@ -31,6 +31,13 @@ class FirestoreService {
     });
   }
 
+  Future<void> updateBook(String bookID, String part, String newDetails) {
+    return notes.doc(bookID).update({
+      part : newDetails,
+      'timestamp': Timestamp.now(),
+    });
+  }
+
   Future<void> deleteNote(String noteID) {
     return notes.doc(noteID).delete();
   }
