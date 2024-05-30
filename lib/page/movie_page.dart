@@ -45,8 +45,8 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Favorite " + user.email! + " Movie",
-            style: TextStyle(fontSize: 24),
+            "All Comics",
+            style: TextStyle(fontSize: 24, color: Colors.white),
           ),
           actions: const [Icon(Icons.search), SizedBox(width: 12)],
         ),
