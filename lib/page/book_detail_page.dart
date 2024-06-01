@@ -48,17 +48,17 @@ class BookDetailPage extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 SizedBox(height: 16),
-                  ElevatedButton(
+                ElevatedButton(
                   onPressed: () async {
                     await FirebaseFirestore.instance
-                      .collection('books_user')
-                      .where('book_id', isEqualTo: bookId)
-                      .get()
-                      .then((querySnapshot) {
-                        querySnapshot.docs.forEach((doc) {
-                          doc.reference.delete();
-                        });
+                        .collection('books_user')
+                        .where('book_id', isEqualTo: bookId)
+                        .get()
+                        .then((querySnapshot) {
+                      querySnapshot.docs.forEach((doc) {
+                        doc.reference.delete();
                       });
+                    });
                     Navigator.of(context).pop();
                   },
                   child: Text('Batalkan Peminjaman'),

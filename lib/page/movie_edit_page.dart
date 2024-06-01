@@ -18,9 +18,8 @@ class AddEditNotePage extends StatefulWidget {
 
 class _AddEditNotePageState extends State<AddEditNotePage> {
   final _formKey = GlobalKey<FormState>();
-  late bool isImportant;
+  late String name;
   late String image;
-  late String title;
   late String description;
 
   final FirestoreService firestoreService = FirestoreService();
@@ -29,36 +28,33 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
   void initState() {
     super.initState();
 
-    isImportant = widget.note?.isImportant ?? false;
+    name = widget.note?.name ?? '';
     image = widget.note?.image ?? '';
-    title = widget.note?.title ?? '';
     description = widget.note?.description ?? '';
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          actions: [buildButton()],
-        ),
-        body: Form(
-          key: _formKey,
-          child: NoteFormWidget(
-            isImportant: isImportant,
-            image: image,
-            title: title,
-            description: description,
-            onChangedImportant: (isImportant) =>
-                setState(() => this.isImportant = isImportant),
-            onChangedImage: (image) => setState(() => this.image = image),
-            onChangedTitle: (title) => setState(() => this.title = title),
-            onChangedDescription: (description) =>
-                setState(() => this.description = description),
-          ),
-        ),
-      );
+    appBar: AppBar(
+      actions: [buildButton()],
+    ),
+    body: Form(
+      key: _formKey,
+      child: NoteFormWidget(
+        name: name,
+        image: image,
+
+        description: description,
+        onChangedImage: (image) => setState(() => this.image = image),
+        onChangedName: (name) => setState(() => this.name = name),
+        onChangedDescription: (description) =>
+            setState(() => this.description = description),
+      ),
+    ),
+  );
 
   Widget buildButton() {
-    final isFormValid = title.isNotEmpty && description.isNotEmpty;
+    final isFormValid = name.isNotEmpty && description.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -91,8 +87,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
 
   Future updateNote() async {
     final note = widget.note!.copy(
-      isImportant: isImportant,
-      title: title,
+      name: name,
       image: image,
       description: description,
     );
@@ -102,8 +97,7 @@ class _AddEditNotePageState extends State<AddEditNotePage> {
 
   Future addNote() async {
     final note = Movie(
-      title: title,
-      isImportant: true,
+      name: name,
       description: description,
       image: image,
       createdTime: DateTime.now(),

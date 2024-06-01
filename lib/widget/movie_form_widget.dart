@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 
 class NoteFormWidget extends StatelessWidget {
-  final bool? isImportant;
   final String? image;
-  final String? title;
+  final String? name;
   final String? description;
-  final ValueChanged<bool> onChangedImportant;
   final ValueChanged<String> onChangedImage;
-  final ValueChanged<String> onChangedTitle;
+  final ValueChanged<String> onChangedName;
   final ValueChanged<String> onChangedDescription;
 
   const NoteFormWidget({
     Key? key,
-    this.isImportant = false,
     this.image = '',
-    this.title = '',
+    this.name = '',
     this.description = '',
-    required this.onChangedImportant,
     required this.onChangedImage,
-    required this.onChangedTitle,
+    required this.onChangedName,
     required this.onChangedDescription,
   }) : super(key: key);
 
@@ -42,7 +38,7 @@ class NoteFormWidget extends StatelessWidget {
 
   Widget buildTitle() => TextFormField(
     maxLines: 1,
-    initialValue: title,
+    initialValue: name,
     style: const TextStyle(
       color: Colors.white70,
       fontWeight: FontWeight.bold,
@@ -55,7 +51,7 @@ class NoteFormWidget extends StatelessWidget {
     ),
     validator: (title) =>
     title != null && title.isEmpty ? 'The title cannot be empty' : null,
-    onChanged: onChangedTitle,
+    onChanged: onChangedName,
   );
 
   Widget buildImage() => TextFormField(

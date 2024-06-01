@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tamiyochi/NotesMain.dart';
 import 'package:tamiyochi/page/forum_page.dart';
+import 'package:tamiyochi/pages/login_or_register.dart';
 import 'package:tamiyochi/pages/login_page.dart';
 import 'package:tamiyochi/user_book.dart';
 import 'home_page.dart';
@@ -76,7 +77,7 @@ class _AuthPageState extends State<AuthPage> {
 
           // user is NOT logged in
           else {
-            return LoginPage();
+            return LoginOrRegisterPage();
           }
         },
       ),
