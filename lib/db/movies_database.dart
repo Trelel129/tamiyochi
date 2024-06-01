@@ -32,8 +32,7 @@ class MovieDatabase {
     await db.execute('''
     CREATE TABLE $tableMovie ( 
       ${MovieFields.id} $idType, 
-      ${MovieFields.isImportant} $boolType,
-      ${MovieFields.title} $textType,
+      ${MovieFields.name} $textType,
       ${MovieFields.description} $textType,
       ${MovieFields.image} $textType,
       ${MovieFields.time} $textType

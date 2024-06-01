@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tamiyochi/model/movie.dart';
@@ -6,9 +8,10 @@ import '../services/firestore.dart';
 
 class BookRentPage extends StatefulWidget {
   final String bookId;
-  BookRentPage({
+  final int line;
+  const BookRentPage({
     super.key,
-    required this.bookId,
+    required this.bookId, required this.line,
   });
 
   @override
@@ -21,19 +24,19 @@ class _BookRentPageState extends State<BookRentPage> {
   bool isdocIdNull = true;
 
   //open dialog box to edit
-  void openNoteBox({String? docId}){
-    if (docId != null) {
-      isdocIdNull = false;
-    } else {
-      isdocIdNull = true;
-    }
+  void openNoteBox({
+    String? docId,
+    String? opt,
+    int? line,
+  }){
     showDialog(
       context: context,
       builder: (BuildContext context){
 
         return AlertDialog(
-          title: isdocIdNull ? const Text('Add Note') : const Text('Edit Note'),
+          title: Text('Edit $opt'),
           content: TextField(
+            maxLines: line,
             controller: controller,
           ),
           actions: <Widget>[
@@ -45,19 +48,12 @@ class _BookRentPageState extends State<BookRentPage> {
             ),
             TextButton(
               onPressed: () {
-                // add new note to Firestore
-                if (docId == null) {
-                  firestoreService.addNote(controller.text as Movie);
-                }
-                // update note in Firestores
-                else {
-                  firestoreService.updateBook(docId, part, controller.text);
-                }
+                firestoreService.updateBook(docId!, opt!, controller.text);
                 // Clear the text controller
                 controller.clear();
                 Navigator.pop(context);
               },
-              child: isdocIdNull ? const Text('Add') : const Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         );
@@ -94,24 +90,37 @@ class _BookRentPageState extends State<BookRentPage> {
                   bookData['image'],
                   fit: BoxFit.cover,
                 ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () => openNoteBox(docId: widget.bookId, opt: 'image'),
+                ),
                 SizedBox(height: 16),
-                Text(
-                  bookData['name'],
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      bookData['name'],
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () => openNoteBox(docId: widget.bookId, opt: 'name'),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 8),
                 Text(
                   bookData['description'],
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 16),
+
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () => openNoteBox(docId: widget.bookId),
+                  onPressed: () => openNoteBox(docId: widget.bookId, opt: 'description'),
                 ),
+                SizedBox(height: 16),
               ],
             ),
           );

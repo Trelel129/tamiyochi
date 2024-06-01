@@ -48,7 +48,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
           Text(
-            note.title,
+            note.name,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 22,
