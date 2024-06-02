@@ -22,4 +22,20 @@ class FirestoreForumService {
       'time': forum.createdTime
     });
   }
+
+  Future<void> updateForumPerPart(
+      String forumID, String part, String newDetails) {
+    final forum = forums.doc(forumID).get();
+    return forum.then((value) {
+      if (value.exists) {
+        return forums.doc(forumID).update({
+          part: newDetails,
+        });
+      } else {
+        return forums.doc(forumID).set({
+          part: newDetails,
+        });
+      }
+    });
+  }
 }
