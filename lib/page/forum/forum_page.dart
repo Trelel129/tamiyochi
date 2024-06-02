@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tamiyochi/db/movies_database.dart';
 import 'package:tamiyochi/model/movie.dart';
-import 'package:tamiyochi/page/movie_edit_page.dart';
+import 'package:tamiyochi/page/forum/forum_edit_page.dart';
 import 'package:tamiyochi/page/movie_detail_page.dart';
 import 'package:tamiyochi/widget/movie_card_widget.dart';
 
@@ -44,7 +44,7 @@ class _ForumPageState extends State<ForumPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text(
+      title: const Text(
         "Forums",
         style: TextStyle(fontSize: 24, color: Colors.black),
 
@@ -57,16 +57,16 @@ class _ForumPageState extends State<ForumPage> {
           : notes.isEmpty
           ? const Text(
         'No Books',
-        style: TextStyle(color: Colors.white, fontSize: 24),
+        style: TextStyle(color: Colors.black, fontSize: 24),
       )
           : buildNotes(),
     ),
     floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white38,
       child: const Icon(Icons.add),
       onPressed: () async {
         await Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const AddEditNotePage()),
+          MaterialPageRoute(builder: (context) => const AddEditForumPage()),
         );
 
         refreshNotes();

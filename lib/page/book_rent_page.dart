@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tamiyochi/model/movie.dart';
 
 import '../services/firestore.dart';
 
@@ -11,7 +8,8 @@ class BookRentPage extends StatefulWidget {
   final int line;
   const BookRentPage({
     super.key,
-    required this.bookId, required this.line,
+    required this.bookId,
+    required this.line,
   });
 
   @override
@@ -28,11 +26,10 @@ class _BookRentPageState extends State<BookRentPage> {
     String? docId,
     String? opt,
     int? line,
-  }){
+  }) {
     showDialog(
       context: context,
-      builder: (BuildContext context){
-
+      builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Edit $opt'),
           content: TextField(
@@ -92,7 +89,8 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () => openNoteBox(docId: widget.bookId, opt: 'image'),
+                  onPressed: () =>
+                      openNoteBox(docId: widget.bookId, opt: 'image'),
                 ),
                 SizedBox(height: 16),
                 Row(
@@ -106,7 +104,8 @@ class _BookRentPageState extends State<BookRentPage> {
                     ),
                     IconButton(
                       icon: Icon(Icons.edit),
-                      onPressed: () => openNoteBox(docId: widget.bookId, opt: 'name'),
+                      onPressed: () =>
+                          openNoteBox(docId: widget.bookId, opt: 'name'),
                     ),
                   ],
                 ),
@@ -115,10 +114,10 @@ class _BookRentPageState extends State<BookRentPage> {
                   bookData['description'],
                   style: TextStyle(fontSize: 16),
                 ),
-
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () => openNoteBox(docId: widget.bookId, opt: 'description'),
+                  onPressed: () =>
+                      openNoteBox(docId: widget.bookId, opt: 'description'),
                 ),
                 SizedBox(height: 16),
               ],
