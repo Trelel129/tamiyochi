@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tamiyochi/page/book_detail_page.dart';
 
@@ -16,7 +15,7 @@ class _UserBookState extends State<UserBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "My Book",
           style: TextStyle(fontSize: 24),
         ),
@@ -27,7 +26,7 @@ class _UserBookState extends State<UserBook> {
           if (snapshot.hasData) {
             final booksUser = snapshot.data!.docs;
             return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
@@ -37,10 +36,14 @@ class _UserBookState extends State<UserBook> {
                 final bookId = booksUser[index].get('book_id');
 
                 return FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance.collection('books').doc(bookId).get(),
+                  future: FirebaseFirestore.instance
+                      .collection('books')
+                      .doc(bookId)
+                      .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final bookData = snapshot.data!.data() as Map<String, dynamic>;
+                      final bookData =
+                          snapshot.data!.data() as Map<String, dynamic>;
                       final bookName = bookData['name'];
                       final bookImage = bookData['image'];
 
@@ -48,19 +51,23 @@ class _UserBookState extends State<UserBook> {
                         crossAxisCellCount: 1,
                         child: GestureDetector(
                             onTap: () async {
-                              await Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => BookDetailPage(bookId: bookId),
+                              await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (context) =>
+                                    BookDetailPage(bookId: bookId),
                               ));
                             },
                             child: SingleChildScrollView(
                               child: Card(
                                 color: Colors.lightGreen.shade300,
                                 child: Container(
-                                  constraints: BoxConstraints(minHeight: 200),
+                                  constraints:
+                                      const BoxConstraints(minHeight: 200),
                                   padding: const EdgeInsets.all(8),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         bookName,
@@ -75,8 +82,7 @@ class _UserBookState extends State<UserBook> {
                                   ),
                                 ),
                               ),
-                            )
-                        ),
+                            )),
                       );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
