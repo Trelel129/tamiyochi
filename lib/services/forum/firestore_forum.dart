@@ -38,4 +38,8 @@ class FirestoreForumService {
       }
     });
   }
+
+  Future<void> deleteForum(String forumID) {
+    return forums.doc(forumID).delete();
+  }
 }

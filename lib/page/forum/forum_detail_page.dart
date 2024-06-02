@@ -66,6 +66,15 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Forum Detail'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              firestoreForumService.deleteForum(widget.forumId);
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
