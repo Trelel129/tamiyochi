@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,8 +20,33 @@ class BookRentPage extends StatefulWidget {
 class _BookRentPageState extends State<BookRentPage> {
   final FirestoreService firestoreService = FirestoreService();
   final TextEditingController controller = TextEditingController();
-  bool isdocIdNull = true;
 
+  final CollectionReference rentals = FirebaseFirestore.instance.collection('books_user');
+  Future<void> addRental(String bookId, String userId) async {
+    DateTime? returnDate = await showDialog<DateTime>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Return Date'),
+          content: DatePickerDialog(
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now(),
+            lastDate: DateTime(2100),
+          ),
+        );
+      },
+    );
+
+    if (returnDate != null) {
+      await rentals.add({
+        'book_id': bookId,
+        'user_id': userId,
+        'return_date': returnDate,
+      });
+
+      Navigator.pop(context);
+    }
+  }
   //open dialog box to edit
   void openNoteBox({
     String? docId,
@@ -120,6 +146,14 @@ class _BookRentPageState extends State<BookRentPage> {
                       openNoteBox(docId: widget.bookId, opt: 'description'),
                 ),
                 SizedBox(height: 16),
+                ElevatedButton(
+                    onPressed: () {
+                      String bookId = widget.bookId;
+                      String userId = FirebaseAuth.instance.currentUser!.uid;
+                      addRental(bookId, userId);
+                    },
+                  child: Text('Rental'),
+                ),
               ],
             ),
           );

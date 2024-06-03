@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tamiyochi/page/book_detail_page.dart';
 
 class UserBook extends StatefulWidget {
-  const UserBook({super.key});
+  const UserBook({Key? key}) : super(key: key);
 
   @override
   State<UserBook> createState() => _UserBookState();
@@ -13,6 +14,9 @@ class UserBook extends StatefulWidget {
 class _UserBookState extends State<UserBook> {
   @override
   Widget build(BuildContext context) {
+    // Get the current user's UID
+    final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -21,7 +25,10 @@ class _UserBookState extends State<UserBook> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('books_user').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('books_user')
+            .where('user_id', isEqualTo: currentUserUID) // Filter by current user's UID
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final booksUser = snapshot.data!.docs;
@@ -50,44 +57,45 @@ class _UserBookState extends State<UserBook> {
                       return StaggeredGridTile.fit(
                         crossAxisCellCount: 1,
                         child: GestureDetector(
-                            onTap: () async {
-                              await Navigator.of(context)
-                                  .push(MaterialPageRoute(
+                          onTap: () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(
                                 builder: (context) =>
                                     BookDetailPage(bookId: bookId),
-                              ));
-                            },
-                            child: SingleChildScrollView(
-                              child: Card(
-                                color: Colors.lightGreen.shade300,
-                                child: Container(
-                                  constraints:
-                                      const BoxConstraints(minHeight: 200),
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        bookName,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                              ),
+                            );
+                          },
+                          child: SingleChildScrollView(
+                            child: Card(
+                              color: Colors.lightGreen.shade300,
+                              child: Container(
+                                constraints:
+                                    const BoxConstraints(minHeight: 200),
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      bookName,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Image.network(bookImage)
-                                    ],
-                                  ),
+                                    ),
+                                    Image.network(bookImage),
+                                  ],
                                 ),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
-                      return CircularProgressIndicator(
+                      return const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
                       );
                     }
@@ -98,7 +106,7 @@ class _UserBookState extends State<UserBook> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            return CircularProgressIndicator(
+            return const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
             );
           }
