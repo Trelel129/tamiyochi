@@ -41,6 +41,7 @@ class _UserBookState extends State<UserBook> {
               itemCount: booksUser.length,
               itemBuilder: (context, index) {
                 final bookId = booksUser[index].get('book_id');
+                final returnDate = booksUser[index].get('return_date');
 
                 return FutureBuilder<DocumentSnapshot>(
                   future: FirebaseFirestore.instance
@@ -61,7 +62,8 @@ class _UserBookState extends State<UserBook> {
                             await Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    BookDetailPage(bookId: bookId),
+                                    BookDetailPage(
+                                        bookId: bookId, returnDate: returnDate),
                               ),
                             );
                           },

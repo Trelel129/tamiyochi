@@ -3,8 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookDetailPage extends StatelessWidget {
   final String bookId;
+  final Timestamp returnDate;
 
-  BookDetailPage({required this.bookId});
+  BookDetailPage({required this.bookId, required this.returnDate});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,8 @@ class BookDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Book Detail'),
       ),
+
+
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('books')
@@ -45,6 +48,11 @@ class BookDetailPage extends StatelessWidget {
                 SizedBox(height: 8),
                 Text(
                   bookData['description'],
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Return Date: ${returnDate.toDate()}',
                   style: TextStyle(fontSize: 16),
                 ),
                 SizedBox(height: 16),
