@@ -49,12 +49,14 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
+      backgroundColor: Colors.green[800],
       title: Text(
         "All Comics",
         style: TextStyle(fontSize: 24, color: Colors.white),
       ),
-      actions: const [Icon(Icons.search), SizedBox(width: 12)],
+      actions: const [Icon(Icons.search, color: Colors.greenAccent), SizedBox(width: 12)],
     ),
+    backgroundColor: Colors.white,
     body: StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('books').snapshots(),
       builder: (context, snapshot) {
@@ -89,7 +91,7 @@ class _MoviePageState extends State<MoviePage> {
                 },
                 child: SingleChildScrollView(
                   child: Card(
-                    color: Colors.lightGreen.shade300,
+                    color: Colors.grey[400],
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Column(
@@ -100,7 +102,7 @@ class _MoviePageState extends State<MoviePage> {
                             children: [
                               Container(), // This empty container is used to push the delete icon to the right
                               IconButton(
-                                icon: Icon(Icons.delete),
+                                icon: Icon(Icons.delete, color: Colors.red),
                                 onPressed: () => firestoreService.deleteNote(docId),
                               ),
                             ],
@@ -153,8 +155,8 @@ class _MoviePageState extends State<MoviePage> {
       },
     ),
     floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.black,
-      child: const Icon(Icons.add),
+      backgroundColor: Colors.green[900],
+      child: const Icon(Icons.add, color: Colors.white),
       onPressed: () async {
         await Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const AddEditNotePage()),

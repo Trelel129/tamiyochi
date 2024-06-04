@@ -15,7 +15,7 @@ class ScrollingText extends StatefulWidget {
     required this.speed,
     this.scrollAxis = Axis.horizontal,
     this.ratioOfBlankToScreen = 1,
-  }) : assert(text != null,);
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -57,17 +57,17 @@ class ScrollingTextState extends State<ScrollingText>
         if (pixels + _moveDistance >= maxScrollExtent) {
           if (widget.scrollAxis == Axis.horizontal) {
             position = (maxScrollExtent -
-                screenWidth * widget.ratioOfBlankToScreen +
-                widgetWidth!) /
-                2 -
+                        screenWidth * widget.ratioOfBlankToScreen +
+                        widgetWidth!) /
+                    2 -
                 widgetWidth +
                 pixels -
                 maxScrollExtent;
           } else {
             position = (maxScrollExtent -
-                screenHeight * widget.ratioOfBlankToScreen +
-                widgetHeight!) /
-                2 -
+                        screenHeight * widget.ratioOfBlankToScreen +
+                        widgetHeight!) /
+                    2 -
                 widgetHeight +
                 pixels -
                 maxScrollExtent;
@@ -101,9 +101,9 @@ class ScrollingTextState extends State<ScrollingText>
     }
     return Center(
         child: Text(
-          widget.text,
-          style: widget.textStyle,
-        ));
+      widget.text,
+      style: widget.textStyle,
+    ));
   }
 
   Widget getCenterChild() {
@@ -117,9 +117,7 @@ class ScrollingTextState extends State<ScrollingText>
   @override
   void dispose() {
     super.dispose();
-    if (timer != null) {
-      timer.cancel();
-    }
+    timer.cancel();
   }
 
   @override

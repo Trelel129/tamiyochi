@@ -30,17 +30,17 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
           child: Column(
-            children: [
-              Text(
-                user.email!,
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                user.uid!,
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          )),
+        children: [
+          Text(
+            user.email!,
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            user.uid,
+            style: TextStyle(fontSize: 20),
+          ),
+        ],
+      )),
     );
   }
 }
