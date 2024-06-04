@@ -12,6 +12,8 @@ class BookDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Book Detail'),
       ),
+
+
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('books')
