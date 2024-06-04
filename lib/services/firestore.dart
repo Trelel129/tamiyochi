@@ -47,7 +47,9 @@ class FirestoreService {
       }
     });
   }
-
+  Future<void> deleteBook(String bookID) {
+    return notes.doc(bookID).delete();
+  }
   Future<void> deleteNote(String noteID) {
     return notes.doc(noteID).delete();
   }

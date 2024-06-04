@@ -49,25 +49,25 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                     label: 'All Comics',
                     backgroundColor:
-                        _selectedIndex == 0 ? Colors.purple : Colors.grey,
+                        _selectedIndex == 0 ? Colors.green[800] : Colors.grey,
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.library_books),
                     label: 'My Comics',
                     backgroundColor:
-                        _selectedIndex == 1 ? Colors.purple : Colors.grey[700],
+                        _selectedIndex == 1 ? Colors.green[800] : Colors.grey[700],
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.chat_bubble),
                     label: 'Forums',
                     backgroundColor:
-                        _selectedIndex == 2 ? Colors.purple : Colors.grey,
+                        _selectedIndex == 2 ? Colors.green[800] : Colors.grey,
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.person),
                     label: 'Profile',
                     backgroundColor:
-                        _selectedIndex == 3 ? Colors.purple : Colors.grey,
+                        _selectedIndex == 3 ? Colors.green[800] : Colors.grey,
                   ),
                 ],
                 currentIndex: _selectedIndex,

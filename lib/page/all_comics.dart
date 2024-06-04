@@ -97,16 +97,16 @@ class _MoviePageState extends State<MoviePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(), // This empty container is used to push the delete icon to the right
-                              IconButton(
-                                icon: Icon(Icons.delete, color: Colors.red),
-                                onPressed: () => firestoreService.deleteNote(docId),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Container(), // This empty container is used to push the delete icon to the right
+                          //     IconButton(
+                          //       icon: Icon(Icons.delete, color: Colors.red),
+                          //       onPressed: () => firestoreService.deleteNote(docId),
+                          //     ),
+                          //   ],
+                          // ),
                           Center(
                             child: Column(
                               children: [

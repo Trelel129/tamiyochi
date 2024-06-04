@@ -83,13 +83,21 @@ class _BookRentPageState extends State<BookRentPage> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Book Detail'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              firestoreService.deleteBook(widget.bookId);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
