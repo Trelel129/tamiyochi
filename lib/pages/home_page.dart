@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  final user = FirebaseAuth.instance.currentUser!;
-
   // sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
@@ -29,18 +27,34 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Center(
-          child: Column(
-        children: [
-          Text(
-            user.email!,
-            style: TextStyle(fontSize: 20),
-          ),
-          Text(
-            user.uid,
-            style: TextStyle(fontSize: 20),
-          ),
-        ],
-      )),
+        child: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Something went wrong!');
+            } else if (!snapshot.hasData) {
+              return Text('User not logged in!');
+            } else {
+              final user = snapshot.data!;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    user.email!,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    user.uid,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }
