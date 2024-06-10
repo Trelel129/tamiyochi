@@ -59,19 +59,20 @@ class _ForumPageState extends State<ForumPage> {
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
 
-                  // Safe access to fields with default values
+                  // Extracting forum details
                   String title = data['title'] ?? 'No Title';
                   String image = data['image'] ?? '';
-                  String user = data['email'] ?? 'Unknown User';
+                  String userEmail = data['email'] ?? 'Unknown User';
 
                   return GestureDetector(
                     onTap: () async {
                       await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ForumDetailPage(
-                            forumId: docId,
-                            title: title,
-                            image: image,
-                            email: user),
+                          forumId: docId,
+                          title: title,
+                          image: image,
+                          email: userEmail,
+                        ),
                       ));
                     },
                     child: Card(
@@ -86,11 +87,11 @@ class _ForumPageState extends State<ForumPage> {
                               children: [
                                 CircleAvatar(
                                   backgroundColor: Colors.grey.shade800,
-                                  child: Text(user[0].toUpperCase()),
+                                  child: Text(userEmail[0].toUpperCase()),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  user,
+                                  userEmail,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -109,16 +110,33 @@ class _ForumPageState extends State<ForumPage> {
                                 ? Image.network(image, height: 500, width: 500)
                                 : Container(),
                             const SizedBox(height: 8),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
                                     Icon(Icons.comment, color: Colors.grey),
                                     SizedBox(width: 4),
-                                    Text('Comment'),
+                                    // Display comment count
+                                    StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('forum')
+                                          .doc(docId)
+                                          .collection('comments')
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          int commentCount =
+                                              snapshot.data!.docs.length;
+                                          return Text(
+                                              '$commentCount Comment(s)');
+                                        } else {
+                                          return Text('Loading...');
+                                        }
+                                      },
+                                    ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ],
