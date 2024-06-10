@@ -127,21 +127,17 @@ class _BookRentPageState extends State<BookRentPage> {
                       openNoteBox(docId: widget.bookId, opt: 'image'),
                 ),
                 SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      bookData['name'],
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () =>
-                          openNoteBox(docId: widget.bookId, opt: 'name'),
-                    ),
-                  ],
+                Text(
+                  bookData['name'],
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () =>
+                      openNoteBox(docId: widget.bookId, opt: 'name'),
                 ),
                 SizedBox(height: 8),
                 Text(

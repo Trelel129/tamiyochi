@@ -39,12 +39,10 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       // pop the loading circle
       Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        showErrorMessage(e.code);
-      } else if (e.code == 'wrong-password') {
-        showErrorMessage(e.code);
-      } else if (e.code == 'invalid-email') {
-        debugPrint('Invalid email provided.');
+      if (e.code == 'invalid-email') {
+        showErrorMessage('Invalid email provided');
+      } else {
+        showErrorMessage("Invalid email or password");
       }
     }
   }
@@ -55,10 +53,10 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Colors.deepPurple,
+            backgroundColor: Colors.redAccent,
             title: Center(
                 child: Text(message,
-                    style: const TextStyle(color: Colors.white))),
+                    style: const TextStyle(color: Colors.white), textAlign: TextAlign.center,)),
           );
         });
   }
@@ -109,19 +107,19 @@ class _LoginPageState extends State<LoginPage> {
 
                     SizedBox(height: 10),
                     //forgot password
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Forgot password?",
-                            style: TextStyle(
-                                color: Colors.grey[600], fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 25),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.end,
+                    //     children: [
+                    //       Text(
+                    //         "Forgot password?",
+                    //         style: TextStyle(
+                    //             color: Colors.grey[600], fontSize: 16),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 25),
 
                     //sign in button
