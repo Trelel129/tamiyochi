@@ -103,7 +103,7 @@ class _ForumPageState extends State<ForumPage> {
                             ),
                             const SizedBox(height: 8),
                             image.isNotEmpty
-                                ? Image.network(image, fit: BoxFit.cover)
+                                ? Image.network(image, height: 500, width: 500)
                                 : Container(),
                             const SizedBox(height: 8),
                             const Row(
