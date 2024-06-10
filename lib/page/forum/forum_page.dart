@@ -68,7 +68,10 @@ class _ForumPageState extends State<ForumPage> {
                     onTap: () async {
                       await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ForumDetailPage(
-                            forumId: docId, title: title, image: image),
+                            forumId: docId,
+                            title: title,
+                            image: image,
+                            email: user),
                       ));
                     },
                     child: Card(
@@ -113,7 +116,7 @@ class _ForumPageState extends State<ForumPage> {
                                   children: [
                                     Icon(Icons.comment, color: Colors.grey),
                                     SizedBox(width: 4),
-                                    Text('123'),
+                                    Text('Comment'),
                                   ],
                                 )
                               ],
