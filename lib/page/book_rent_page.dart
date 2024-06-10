@@ -22,6 +22,7 @@ class _BookRentPageState extends State<BookRentPage> {
   final TextEditingController controller = TextEditingController();
 
   final CollectionReference rentals = FirebaseFirestore.instance.collection('books_user');
+
   Future<void> addRental(String bookId, String userId) async {
     DateTime? returnDate = await showDialog<DateTime>(
       context: context,
@@ -155,10 +156,37 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       String bookId = widget.bookId;
                       String userId = FirebaseAuth.instance.currentUser!.uid;
-                      addRental(bookId, userId);
+                      
+                      // Check if rental already exists
+                      QuerySnapshot rentalSnapshot = await rentals
+                          .where('book_id', isEqualTo: bookId)
+                          .where('user_id', isEqualTo: userId)
+                          .get();
+
+                      if (rentalSnapshot.docs.isNotEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Error'),
+                              content: Text('Anda sudah melakukan peminjaman, jika ingin memperpanjang bisa pada '),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        addRental(bookId, userId);
+                      }
                     },
                   child: Text('Rental'),
                 ),

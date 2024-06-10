@@ -52,7 +52,7 @@ class BookDetailPage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Return Date: ${returnDate.toDate()}',
+                  'Return Date: ${returnDate.toDate().toString().split(' ')[0].split('-').reversed.join('/')}',
                   style: TextStyle(fontSize: 16),
                 ),
                 SizedBox(height: 16),
@@ -76,12 +76,59 @@ class BookDetailPage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 ElevatedButton(
-                  onPressed: () {
-                    // Add your extension function here
+                  onPressed: () async {
+                  int? daysToAdd = await showDialog<int>(
+                    context: context,
+                    builder: (BuildContext context) {
+                    int selectedDays = 0;
+                    return AlertDialog(
+                      title: Text('Tambahkan Jumlah Hari'),
+                      content: TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        selectedDays = int.tryParse(value) ?? 0;
+                      },
+                      ),
+                      actions: [
+                      TextButton(
+                        onPressed: () {
+                        Navigator.of(context).pop(selectedDays);
+                        },
+                        child: Text('OK'),
+                      ),
+                      ],
+                    );
+                    },
+                  );
+
+                  if (daysToAdd != null && daysToAdd > 0) {
+                    DateTime newReturnDate = returnDate.toDate().add(Duration(days: daysToAdd));
+                    await FirebaseFirestore.instance
+                      .collection('books_user')
+                      .where('book_id', isEqualTo: bookId)
+                      .get()
+                      .then((querySnapshot) {
+                    querySnapshot.docs.forEach((doc) {
+                      doc.reference.update({'return_date': newReturnDate});
+                    });
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Perpanjangan waktu berhasil'),
+                    ),
+                    );
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Jumlah hari harus lebih dari 0 atau berupa angka'),
+                    ),
+                    );
+                  }
                   },
                   child: Text('Perpanjangan'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                  backgroundColor: Colors.blue,
                   ),
                 ),
               ],
