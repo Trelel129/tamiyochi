@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../services/firestore.dart';
+import '../user_book.dart';
 
 class BookRentPage extends StatefulWidget {
   final String bookId;
@@ -168,15 +170,27 @@ class _BookRentPageState extends State<BookRentPage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: Text('Error'),
-                              content: Text('Anda sudah melakukan peminjaman, jika ingin memperpanjang bisa pada '),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('OK'),
+                              content: RichText(
+                                text: TextSpan(
+                                  text: 'Anda sudah melakukan peminjaman, jika ingin memperpanjang bisa pada halaman ',
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'My Book',
+                                      style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                                      recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        // Navigate to the My Book page
+                                        // Navigate to the UserBookPage
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => UserBook()),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             );
                           },
                         );

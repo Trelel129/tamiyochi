@@ -32,12 +32,11 @@ class _UserBookState extends State<UserBook> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final booksUser = snapshot.data!.docs;
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
+            return MasonryGridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+
               itemCount: booksUser.length,
               itemBuilder: (context, index) {
                 final bookId = booksUser[index].get('book_id');
