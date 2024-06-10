@@ -5,8 +5,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tamiyochi/db/movies_database.dart';
 import 'package:tamiyochi/model/movie.dart';
 import 'package:tamiyochi/page/movie_edit_page.dart';
-import 'package:tamiyochi/page/movie_detail_page.dart';
-import 'package:tamiyochi/widget/movie_card_widget.dart';
 
 import '../services/firestore.dart';
 import 'book_rent_page.dart';
@@ -67,9 +65,9 @@ class _MoviePageState extends State<MoviePage> {
               final List books = snapshot.data!.docs;
               return MasonryGridView.count(
                 // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 4,
-                  mainAxisSpacing: 4,
+                crossAxisCount: 2,
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
                 // ),
                 itemCount: books.length,
                 itemBuilder: (context, index) {

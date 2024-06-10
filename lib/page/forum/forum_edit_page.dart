@@ -95,6 +95,7 @@ class _AddEditForumPageState extends State<AddEditForumPage> {
       title: title,
       text: text,
       image: image,
+      email: "andika@gmail.com",
       createdTime: DateTime.now(),
     );
 
