@@ -160,8 +160,10 @@ class _MoviePageState extends State<MoviePage> {
             }
           },
         ),
-        floatingActionButton: FloatingActionButton(
+
+        floatingActionButton: (user.email=="admin@admin.adm")? FloatingActionButton(
           backgroundColor: Colors.green[900],
+          // child: const Icon(Icons.add, color: Colors.white), if user.email == 'admin' show
           child: const Icon(Icons.add, color: Colors.white),
           onPressed: () async {
             await Navigator.of(context).push(
@@ -170,7 +172,7 @@ class _MoviePageState extends State<MoviePage> {
 
             refreshNotes();
           },
-        ),
+        ):null,
       );
 
   // Widget buildNotes() => StaggeredGrid.count(
