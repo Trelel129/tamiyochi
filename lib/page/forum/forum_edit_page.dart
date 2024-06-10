@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tamiyochi/model/forum.dart';
 import 'package:tamiyochi/services/forum/firestore_forum.dart';
 import '../../widget/forum/forum_form_widget.dart';
@@ -22,6 +23,7 @@ class _AddEditForumPageState extends State<AddEditForumPage> {
   late String text;
 
   final FirestoreForumService firestoreForumService = FirestoreForumService();
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
@@ -95,10 +97,10 @@ class _AddEditForumPageState extends State<AddEditForumPage> {
       title: title,
       text: text,
       image: image,
+      email: user.email!,
       createdTime: DateTime.now(),
     );
 
-    // await MovieDatabase.instance.create(forum);
     await firestoreForumService.addForum(forum);
   }
 }

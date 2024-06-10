@@ -10,6 +10,7 @@ class FirestoreForumService {
       'title': forum.title,
       'image': forum.image,
       'text': forum.text,
+      'email': forum.email,
       'time': forum.createdTime
     });
   }
