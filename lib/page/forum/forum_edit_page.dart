@@ -58,7 +58,7 @@ class _AddEditForumPageState extends State<AddEditForumPage> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
-          backgroundColor: Colors.grey.shade700,
+          backgroundColor: Colors.green[800],
         ),
         onPressed: addOrUpdateForum,
         child: const Text('Save'),

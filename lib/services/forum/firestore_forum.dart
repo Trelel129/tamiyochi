@@ -43,4 +43,15 @@ class FirestoreForumService {
   Future<void> deleteForum(String forumID) {
     return forums.doc(forumID).delete();
   }
+
+  Future<void> deleteComment(String forumId, String commentId) {
+    return forums.doc(forumId).collection('comments').doc(commentId).delete();
+  }
+
+  Future<void> updateComment(
+      String forumId, String commentId, String opt, String text) {
+    return forums.doc(forumId).collection('comments').doc(commentId).update({
+      opt: text,
+    });
+  }
 }

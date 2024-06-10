@@ -23,62 +23,77 @@ class ForumFormWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              buildTitle(),
+              Text(
+                'Title',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 8),
-              buildImage(),
+              TextFormField(
+                maxLines: 1,
+                initialValue: title,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: const InputDecoration(
+                  hintText: 'Enter Title Here',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.all(12),
+                ),
+                onChanged: onChangedTitle,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Image URL (optional)',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 8),
-              buildDescription(),
+              TextFormField(
+                maxLines: 2,
+                initialValue: image,
+                style: const TextStyle(color: Colors.black87, fontSize: 16),
+                decoration: const InputDecoration(
+                  hintText: 'Enter Image URL Here',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.all(12),
+                ),
+                onChanged: onChangedImage,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Text',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                maxLines: 5,
+                initialValue: text,
+                style: const TextStyle(color: Colors.black87, fontSize: 16),
+                decoration: const InputDecoration(
+                  hintText: 'Enter Text Here',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.all(12),
+                ),
+                onChanged: onChangedText,
+              ),
               const SizedBox(height: 16),
             ],
           ),
         ),
-      );
-
-  Widget buildTitle() => TextFormField(
-        maxLines: 1,
-        initialValue: title,
-        style: const TextStyle(
-          color: Colors.black38,
-          fontWeight: FontWeight.bold,
-          fontSize: 24,
-        ),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Title',
-          hintStyle: TextStyle(color: Colors.black38),
-        ),
-        validator: (title) =>
-            title != null && title.isEmpty ? 'The title cannot be empty' : null,
-        onChanged: onChangedTitle,
-      );
-
-  Widget buildImage() => TextFormField(
-        maxLines: 2,
-        initialValue: image,
-        style: const TextStyle(color: Colors.black38, fontSize: 18),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Enter Image Here',
-          hintStyle: TextStyle(color: Colors.black38),
-        ),
-        validator: (title) =>
-            title != null && title.isEmpty ? 'The Image cannot be empty' : null,
-        onChanged: onChangedImage,
-      );
-
-  Widget buildDescription() => TextFormField(
-        maxLines: 5,
-        initialValue: text,
-        style: const TextStyle(color: Colors.black38, fontSize: 18),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Enter Text Here',
-          hintStyle: TextStyle(color: Colors.black38),
-        ),
-        validator: (title) =>
-            title != null && title.isEmpty ? 'The text cannot be empty' : null,
-        onChanged: onChangedText,
       );
 }
