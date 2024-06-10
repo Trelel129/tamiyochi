@@ -5,6 +5,7 @@ import 'package:tamiyochi/model/movie.dart';
 import 'package:tamiyochi/page/forum/forum_detail_page.dart';
 import 'package:tamiyochi/page/forum/forum_edit_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tamiyochi/services/forum/custom_search.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
@@ -36,6 +37,29 @@ class _ForumPageState extends State<ForumPage> {
     setState(() => isLoading = false);
   }
 
+  Future<int> fetchCommentCount(String docId) async {
+    QuerySnapshot commentSnapshot = await FirebaseFirestore.instance
+        .collection('forum')
+        .doc(docId)
+        .collection('comments')
+        .get();
+
+    int commentCount = commentSnapshot.docs.length;
+
+    for (var commentDoc in commentSnapshot.docs) {
+      QuerySnapshot replySnapshot = await FirebaseFirestore.instance
+          .collection('forum')
+          .doc(docId)
+          .collection('comments')
+          .doc(commentDoc.id)
+          .collection('replies')
+          .get();
+      commentCount += replySnapshot.docs.length;
+    }
+
+    return commentCount;
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -44,7 +68,25 @@ class _ForumPageState extends State<ForumPage> {
             style: TextStyle(fontSize: 24, color: Colors.white),
           ),
           backgroundColor: Colors.green[800],
-          actions: const [Icon(Icons.search), SizedBox(width: 12)],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                final snapshot =
+                    await FirebaseFirestore.instance.collection('forum').get();
+
+                final forumData = snapshot.docs
+                    .map((doc) => doc.data()['title'].toString())
+                    .toList();
+
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(context, forumData),
+                );
+              },
+            ),
+            SizedBox(width: 12),
+          ],
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('forum').snapshots(),
@@ -59,7 +101,6 @@ class _ForumPageState extends State<ForumPage> {
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
 
-                  // Extracting forum details
                   String title = data['title'] ?? 'No Title';
                   String image = data['image'] ?? '';
                   String userEmail = data['email'] ?? 'Unknown User';
@@ -117,21 +158,19 @@ class _ForumPageState extends State<ForumPage> {
                                   children: [
                                     Icon(Icons.comment, color: Colors.grey),
                                     SizedBox(width: 4),
-                                    // Display comment count
-                                    StreamBuilder<QuerySnapshot>(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('forum')
-                                          .doc(docId)
-                                          .collection('comments')
-                                          .snapshots(),
+                                    FutureBuilder<int>(
+                                      future: fetchCommentCount(docId),
                                       builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          int commentCount =
-                                              snapshot.data!.docs.length;
-                                          return Text(
-                                              '$commentCount Comment(s)');
-                                        } else {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
                                           return Text('Loading...');
+                                        } else {
+                                          if (snapshot.hasData) {
+                                            return Text(
+                                                '${snapshot.data} Comment(s)');
+                                          } else {
+                                            return Text('Error');
+                                          }
                                         }
                                       },
                                     ),
