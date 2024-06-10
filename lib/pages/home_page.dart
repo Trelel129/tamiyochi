@@ -1,12 +1,47 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+import '../services/firestore.dart';
+
+class HomePage extends StatefulWidget {
   HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+
+}
+class _HomePageState extends State<HomePage> {
+  final FirestoreService firestoreService = FirestoreService();
+  final TextEditingController controller = TextEditingController();
 
   // sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
+  }
+  void openNoteBox({
+    String? UId,
+    int? line,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Image'),
+          content: TextField(
+            maxLines: line,
+            controller: controller,
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -26,7 +61,8 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -38,18 +74,38 @@ class HomePage extends StatelessWidget {
               return Text('User not logged in!');
             } else {
               final user = snapshot.data!;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    user.email!,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    user.uid,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage('lib/assets/images/Seaborn.png'),
+                        radius: 80.0,
+                        child: (user.photoURL!="")?
+                        Image.network('https://arknights.wiki.gg/images/1/11/Skadi%27s_Seaborn.png'):
+                        Image.network(user.photoURL!),
+                      ),
+                    ),
+                    Divider(
+                        height: 90.0,
+                        color: Colors.grey[800]
+                    ),
+                    Icon(
+                      Icons.email,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      user.email!,
+                      style: TextStyle(
+                        color: Colors.black,
+                        letterSpacing: 2.0,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
           },

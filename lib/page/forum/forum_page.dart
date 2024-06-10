@@ -5,6 +5,7 @@ import 'package:tamiyochi/model/movie.dart';
 import 'package:tamiyochi/page/forum/forum_detail_page.dart';
 import 'package:tamiyochi/page/forum/forum_edit_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tamiyochi/services/forum/custom_search.dart';
 
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
@@ -36,6 +37,29 @@ class _ForumPageState extends State<ForumPage> {
     setState(() => isLoading = false);
   }
 
+  Future<int> fetchCommentCount(String docId) async {
+    QuerySnapshot commentSnapshot = await FirebaseFirestore.instance
+        .collection('forum')
+        .doc(docId)
+        .collection('comments')
+        .get();
+
+    int commentCount = commentSnapshot.docs.length;
+
+    for (var commentDoc in commentSnapshot.docs) {
+      QuerySnapshot replySnapshot = await FirebaseFirestore.instance
+          .collection('forum')
+          .doc(docId)
+          .collection('comments')
+          .doc(commentDoc.id)
+          .collection('replies')
+          .get();
+      commentCount += replySnapshot.docs.length;
+    }
+
+    return commentCount;
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -44,7 +68,25 @@ class _ForumPageState extends State<ForumPage> {
             style: TextStyle(fontSize: 24, color: Colors.white),
           ),
           backgroundColor: Colors.green[800],
-          actions: const [Icon(Icons.search), SizedBox(width: 12)],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                final snapshot =
+                    await FirebaseFirestore.instance.collection('forum').get();
+
+                final forumData = snapshot.docs
+                    .map((doc) => doc.data()['title'].toString())
+                    .toList();
+
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(context, forumData),
+                );
+              },
+            ),
+            SizedBox(width: 12),
+          ],
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('forum').snapshots(),
@@ -59,19 +101,19 @@ class _ForumPageState extends State<ForumPage> {
                   Map<String, dynamic> data =
                       document.data() as Map<String, dynamic>;
 
-                  // Safe access to fields with default values
                   String title = data['title'] ?? 'No Title';
                   String image = data['image'] ?? '';
-                  String user = data['email'] ?? 'Unknown User';
+                  String userEmail = data['email'] ?? 'Unknown User';
 
                   return GestureDetector(
                     onTap: () async {
                       await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ForumDetailPage(
-                            forumId: docId,
-                            title: title,
-                            image: image,
-                            email: user),
+                          forumId: docId,
+                          title: title,
+                          image: image,
+                          email: userEmail,
+                        ),
                       ));
                     },
                     child: Card(
@@ -86,11 +128,11 @@ class _ForumPageState extends State<ForumPage> {
                               children: [
                                 CircleAvatar(
                                   backgroundColor: Colors.grey.shade800,
-                                  child: Text(user[0].toUpperCase()),
+                                  child: Text(userEmail[0].toUpperCase()),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  user,
+                                  userEmail,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -109,16 +151,31 @@ class _ForumPageState extends State<ForumPage> {
                                 ? Image.network(image, height: 500, width: 500)
                                 : Container(),
                             const SizedBox(height: 8),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
                                     Icon(Icons.comment, color: Colors.grey),
                                     SizedBox(width: 4),
-                                    Text('Comment'),
+                                    FutureBuilder<int>(
+                                      future: fetchCommentCount(docId),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Text('Loading...');
+                                        } else {
+                                          if (snapshot.hasData) {
+                                            return Text(
+                                                '${snapshot.data} Comment(s)');
+                                          } else {
+                                            return Text('Error');
+                                          }
+                                        }
+                                      },
+                                    ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ],

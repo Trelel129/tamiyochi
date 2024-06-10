@@ -32,25 +32,26 @@ class _RegisterPageState extends State<RegisterPage> {
         });
     // try creating the user
     try {
-      if (passwordController.text == confirmPasswordController.text) {
+      if (passwordController.text != confirmPasswordController.text) {
+        // pop the loading circle
+        Navigator.pop(context);
+        if (true){
+          showErrorMessage("Passwords do not match");
+        }
+        showErrorMessage("Passwords do not match");
+      } else {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: usernameController.text,
           password: passwordController.text,
         );
         return;
-      } else {
-        showErrorMessage("Passwords do not match");
       }
       // pop the loading circle
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // pop the loading circle
       Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        showErrorMessage(e.code);
-      } else if (e.code == 'wrong-password') {
-        showErrorMessage(e.code);
-      } else if (e.code == 'invalid-email') {
+      if (e.code == 'invalid-email') {
         showErrorMessage('Invalid email provided.');
       } else if (e.code == 'email-already-in-use') {
         showErrorMessage("Email already in use");
