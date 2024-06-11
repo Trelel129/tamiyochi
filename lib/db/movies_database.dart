@@ -26,14 +26,11 @@ class MovieDatabase {
   Future _createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
-    const boolType = 'BOOLEAN NOT NULL';
-    const integerType = 'INTEGER NOT NULL';
 
     await db.execute('''
     CREATE TABLE $tableMovie ( 
       ${MovieFields.id} $idType, 
-      ${MovieFields.isImportant} $boolType,
-      ${MovieFields.title} $textType,
+      ${MovieFields.name} $textType,
       ${MovieFields.description} $textType,
       ${MovieFields.image} $textType,
       ${MovieFields.time} $textType

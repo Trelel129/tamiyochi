@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../model/movie.dart';
 
 class FirestoreService {
   final CollectionReference notes =
-  FirebaseFirestore.instance.collection('notes');
+  FirebaseFirestore.instance.collection('books');
 
   Future<void> addNote(Movie movie) {
     return notes.add({
-      'title': movie.title,
+      'name': movie.name,
       'image': movie.image,
       'description' : movie.description,
-      'timestamp': Timestamp.now()
     });
   }
 
@@ -27,10 +27,29 @@ class FirestoreService {
       'title': newTitle,
       'image': newImage,
       'description' : newDescription,
-      'timestamp': Timestamp.now(),
     });
   }
 
+  Future<void> updateBook(String bookID, String part, String newDetails) {
+    debugPrint('bookID: $bookID, part: $part, newDetails: $newDetails');
+    final note = notes.doc(bookID).get();
+    debugPrint('note: $note');
+    return note.then((value) {
+      if (value.exists) {
+        return notes.doc(bookID).update({
+          part : newDetails,
+        });
+      }
+      else {
+        return notes.doc(bookID).set({
+          part : newDetails,
+        });
+      }
+    });
+  }
+  Future<void> deleteBook(String bookID) {
+    return notes.doc(bookID).delete();
+  }
   Future<void> deleteNote(String noteID) {
     return notes.doc(noteID).delete();
   }

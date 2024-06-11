@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tamiyochi/page/book_detail_page.dart';
 
 class UserBook extends StatefulWidget {
-  const UserBook({super.key});
+  const UserBook({Key? key}) : super(key: key);
 
   @override
   State<UserBook> createState() => _UserBookState();
@@ -14,33 +14,43 @@ class UserBook extends StatefulWidget {
 class _UserBookState extends State<UserBook> {
   @override
   Widget build(BuildContext context) {
+    // Get the current user's UID
+    final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "My Book",
           style: TextStyle(fontSize: 24),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('books_user').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('books_user')
+            .where('user_id', isEqualTo: currentUserUID) // Filter by current user's UID
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final booksUser = snapshot.data!.docs;
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
+            return MasonryGridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+
               itemCount: booksUser.length,
               itemBuilder: (context, index) {
                 final bookId = booksUser[index].get('book_id');
+                final returnDate = booksUser[index].get('return_date');
 
                 return FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance.collection('books').doc(bookId).get(),
+                  future: FirebaseFirestore.instance
+                      .collection('books')
+                      .doc(bookId)
+                      .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final bookData = snapshot.data!.data() as Map<String, dynamic>;
+                      final bookData =
+                          snapshot.data!.data() as Map<String, dynamic>;
                       final bookName = bookData['name'];
                       final bookImage = bookData['image'];
 
@@ -48,38 +58,45 @@ class _UserBookState extends State<UserBook> {
                         crossAxisCellCount: 1,
                         child: GestureDetector(
                           onTap: () async {
-                            await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BookDetailPage(bookId: bookId),
-                            ));
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BookDetailPage(
+                                        bookId: bookId, returnDate: returnDate),
+                              ),
+                            );
                           },
-                          child: Card(
-                            color: Colors.lightGreen.shade300,
-                            child: Container(
-                              constraints: BoxConstraints(minHeight: 200),
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    bookName,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                          child: SingleChildScrollView(
+                            child: Card(
+                              color: Colors.lightGreen.shade300,
+                              child: Container(
+                                constraints:
+                                    const BoxConstraints(minHeight: 200),
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      bookName,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Image.network(bookImage)
-                                ],
+                                    Image.network(bookImage),
+                                  ],
+                                ),
                               ),
                             ),
-                          )
+                          ),
                         ),
                       );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
-                      return CircularProgressIndicator(
+                      return const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
                       );
                     }
@@ -90,7 +107,7 @@ class _UserBookState extends State<UserBook> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            return CircularProgressIndicator(
+            return const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
             );
           }
