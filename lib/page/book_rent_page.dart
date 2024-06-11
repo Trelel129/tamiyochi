@@ -21,6 +21,7 @@ class BookRentPage extends StatefulWidget {
 
 class _BookRentPageState extends State<BookRentPage> {
   final FirestoreService firestoreService = FirestoreService();
+  final user = FirebaseAuth.instance.currentUser!;
   final TextEditingController controller = TextEditingController();
 
   final CollectionReference rentals = FirebaseFirestore.instance.collection('books_user');
@@ -126,8 +127,8 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () =>
-                      openNoteBox(docId: widget.bookId, opt: 'image'),
+                  onPressed: () =>(user.email=="admin@admin.adm")?
+                      openNoteBox(docId: widget.bookId, opt: 'image'): null,
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -139,8 +140,8 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () =>
-                      openNoteBox(docId: widget.bookId, opt: 'name'),
+                  onPressed: () =>(user.email=="admin@admin.adm")?
+                      openNoteBox(docId: widget.bookId, opt: 'name'):null,
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -149,8 +150,8 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () =>
-                      openNoteBox(docId: widget.bookId, opt: 'description'),
+                  onPressed: () =>(user.email=="admin@admin.adm")?
+                      openNoteBox(docId: widget.bookId, opt: 'description'):null,
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
