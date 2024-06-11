@@ -95,7 +95,7 @@ class _BookRentPageState extends State<BookRentPage> {
         title: Text('Book Detail'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon((user.email=="admin@admin.adm")?Icons.delete:null),
             onPressed: () {
               firestoreService.deleteBook(widget.bookId);
               Navigator.of(context).pop();
