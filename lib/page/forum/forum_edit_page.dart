@@ -69,6 +69,13 @@ class _AddEditForumPageState extends State<AddEditForumPage> {
   void addOrUpdateForum() async {
     final isValid = _formKey.currentState!.validate();
 
+    if (title.isEmpty || text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Title or text cannot be empty')),
+      );
+      return;
+    }
+
     if (isValid) {
       final isUpdating = widget.forum != null;
 
