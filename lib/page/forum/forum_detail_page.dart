@@ -67,7 +67,6 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
     );
   }
 
-  // Add a new comment
   void addComment() {
     if (commentController.text.trim().isNotEmpty) {
       FirebaseFirestore.instance
@@ -83,12 +82,10 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
     }
   }
 
-  // Method to delete a reply
   void deleteReply(String commentId, String replyId) {
     firestoreForumService.deleteReply(widget.forumId, commentId, replyId);
   }
 
-  // Method to open dialog box to edit a reply
   void openReplyBox({
     required String commentId,
     required String replyId,
@@ -121,7 +118,7 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
                   opt,
                   controller.text,
                 );
-                // Clear the text controller
+
                 controller.clear();
                 Navigator.pop(context);
               },
@@ -133,7 +130,6 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
     );
   }
 
-  // Open dialog box to edit comment
   void openCommentBox({
     required String commentId,
     required String opt,
@@ -164,7 +160,6 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
                   opt,
                   controller.text,
                 );
-                // Clear the text controller
                 controller.clear();
                 Navigator.pop(context);
               },
@@ -176,12 +171,10 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
     );
   }
 
-  // Delete comment
   void deleteComment(String commentId) {
     firestoreForumService.deleteComment(widget.forumId, commentId);
   }
 
-  // Reply to a comment
   void replyToComment(String parentId) {
     showDialog(
       context: context,
@@ -215,7 +208,6 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
     );
   }
 
-  // Add a reply to a comment
   void addReplyToComment(String parentId) {
     if (commentController.text.trim().isNotEmpty) {
       FirebaseFirestore.instance
@@ -249,7 +241,7 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
               },
             )
           else
-            const SizedBox(), // Empty widget if the user is not the owner
+            const SizedBox(),
         ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
@@ -313,7 +305,6 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Display comments
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('forum')
@@ -373,19 +364,16 @@ class _ForumDetailPageState extends State<ForumDetailPage> {
                                       ),
                                   ],
                                 ),
-                                // Add reply button
                                 onTap: () {
                                   replyToComment(commentId);
                                 },
                               ),
-                              // Display replies
                               StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
                                     .collection('forum')
                                     .doc(widget.forumId)
                                     .collection('comments')
-                                    .doc(
-                                        commentId) // Get replies for this comment
+                                    .doc(commentId)
                                     .collection('replies')
                                     .orderBy('timestamp', descending: true)
                                     .snapshots(),
