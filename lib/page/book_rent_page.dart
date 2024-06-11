@@ -22,7 +22,7 @@ class BookRentPage extends StatefulWidget {
 class _BookRentPageState extends State<BookRentPage> {
   final FirestoreService firestoreService = FirestoreService();
   final TextEditingController controller = TextEditingController();
-
+  final user = FirebaseAuth.instance.currentUser!;
   final CollectionReference rentals = FirebaseFirestore.instance.collection('books_user');
 
   Future<void> addRental(String bookId, String userId) async {
@@ -126,9 +126,9 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () =>
-                      openNoteBox(docId: widget.bookId, opt: 'image'),
-                ),
+                  onPressed: () =>(user.email=="admin@admin.adm")?
+                      openNoteBox(docId: widget.bookId, opt: 'image'):null,
+                ):null,
                 SizedBox(height: 16),
                 Text(
                   bookData['name'],
@@ -139,8 +139,8 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () =>
-                      openNoteBox(docId: widget.bookId, opt: 'name'),
+                  onPressed: () =>(user.email=="admin@admin.adm")?
+                      openNoteBox(docId: widget.bookId, opt: 'name'):null,
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -149,8 +149,8 @@ class _BookRentPageState extends State<BookRentPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () =>
-                      openNoteBox(docId: widget.bookId, opt: 'description'),
+                  onPressed: () =>(user.email=="admin@admin.adm")?
+                      openNoteBox(docId: widget.bookId, opt: 'description'):null,
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
