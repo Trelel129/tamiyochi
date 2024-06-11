@@ -126,9 +126,9 @@ class _BookRentPageState extends State<BookRentPage> {
                   fit: BoxFit.cover,
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () =>(user.email=="admin@admin.adm")?
-                      openNoteBox(docId: widget.bookId, opt: 'image'): null,
+                  icon: Icon((user.email=="admin@admin.adm")?Icons.edit:null),
+                  onPressed: () =>
+                      openNoteBox(docId: widget.bookId, opt: 'image'),
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -139,9 +139,9 @@ class _BookRentPageState extends State<BookRentPage> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () =>(user.email=="admin@admin.adm")?
-                      openNoteBox(docId: widget.bookId, opt: 'name'):null,
+                  icon: Icon((user.email=="admin@admin.adm")?Icons.edit:null),
+                  onPressed: () =>
+                      openNoteBox(docId: widget.bookId, opt: 'name'),
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -149,9 +149,9 @@ class _BookRentPageState extends State<BookRentPage> {
                   style: TextStyle(fontSize: 16),
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () =>(user.email=="admin@admin.adm")?
-                      openNoteBox(docId: widget.bookId, opt: 'description'):null,
+                  icon: Icon((user.email=="admin@admin.adm")?Icons.edit:null),
+                  onPressed: () =>
+                      openNoteBox(docId: widget.bookId, opt: 'description'),
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
